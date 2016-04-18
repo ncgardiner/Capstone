@@ -12,11 +12,12 @@ public class GameFrame extends JFrame
     {
         setSize(FRAME_WIDTH,FRAME_HEIGHT);
         setTitle("Capstone Game");
+        setLayout(new BorderLayout());
         
         game = new GameComponent();
-        add(game);
+        add(game,BorderLayout.CENTER);
+        game.painter();
         
-        setLayout(new BorderLayout());
         setContentPane(new JLabel(new ImageIcon("space.jpg")));
         setLayout(new FlowLayout());
         
