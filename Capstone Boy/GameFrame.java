@@ -18,8 +18,8 @@ public class GameFrame extends JFrame
         add(game,BorderLayout.CENTER);
         game.painter();
         
-        setContentPane(new JLabel(new ImageIcon("space.jpg")));
-        setLayout(new FlowLayout());
+        //setContentPane(new JLabel(new ImageIcon("space.jpg")));
+        //setLayout(new FlowLayout());
         
         MouseListener listener = new MousePressListener();
         game.addMouseListener(listener);
@@ -31,6 +31,7 @@ public class GameFrame extends JFrame
         {
             int x = event.getX();
             int y = event.getY();
+            game.painter();
         }
         public void mouseReleased(MouseEvent event){}
         public void mouseClicked(MouseEvent event){}
