@@ -17,9 +17,11 @@ public class GameComponent extends JComponent
     
     public void paintComponent(Graphics g)
     {
+        super.paintComponent(g);
         Graphics2D g2= (Graphics2D) g; 
-        g2.setColor(Color.BLACK);
-        g2.draw(new Ellipse2D.Double(FRAME_WIDTH/2,FRAME_HEIGHT,50,50));
+        g2.setColor(Color.RED);
+        Ellipse2D.Double circle = new Ellipse2D.Double(FRAME_WIDTH/2-50,FRAME_HEIGHT+10,100,100);
+        g2.fill(circle);
     }
     public void painter()
     {

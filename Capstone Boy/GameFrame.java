@@ -5,24 +5,23 @@ import java.awt.*;
 public class GameFrame extends JFrame
 {
     private static final int FRAME_WIDTH = 800;
-    private static final int FRAME_HEIGHT = 700;
+    private static final int FRAME_HEIGHT = 800;
     
     private GameComponent game;
     public GameFrame()
     {
-        setSize(FRAME_WIDTH,FRAME_HEIGHT);
         setTitle("Capstone Game");
-        setLayout(new BorderLayout());
         
         game = new GameComponent();
-        add(game,BorderLayout.CENTER);
+        add(game);
         game.painter();
         
         //setContentPane(new JLabel(new ImageIcon("space.jpg")));
-        //setLayout(new FlowLayout());
         
         MouseListener listener = new MousePressListener();
         game.addMouseListener(listener);
+        
+        setSize(FRAME_WIDTH,FRAME_HEIGHT);
     }
     
     class MousePressListener implements MouseListener
