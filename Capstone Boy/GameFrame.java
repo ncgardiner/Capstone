@@ -14,28 +14,37 @@ public class GameFrame extends JFrame
         
         game = new GameComponent();
         add(game);
-        game.painter();
+        game.dragged(0,0);
         
         //setContentPane(new JLabel(new ImageIcon("space.jpg")));
         
-        MouseListener listener = new MousePressListener();
-        game.addMouseListener(listener);
+        MouseListener listener1 = new MousePressListener();
+        MouseMotionListener listener2 = new MousePressListener();
+        game.addMouseListener(listener1);
+        game.addMouseMotionListener(listener2);
         
         setSize(FRAME_WIDTH,FRAME_HEIGHT);
     }
     
-    class MousePressListener implements MouseListener
+    class MousePressListener implements MouseListener, MouseMotionListener
     {
         public void mousePressed(MouseEvent event)
         {
             int x = event.getX();
             int y = event.getY();
-            game.painter();
+            game.dragged(x,y);
+        }
+        public void mouseDragged(MouseEvent event)
+        {
+            int x = event.getX();
+            int y = event.getY();
+            game.dragged(x,y);
         }
         public void mouseReleased(MouseEvent event){}
         public void mouseClicked(MouseEvent event){}
         public void mouseEntered(MouseEvent event){}
         public void mouseExited(MouseEvent event){}
+        public void mouseMoved(MouseEvent event){}
     }
     
 }
