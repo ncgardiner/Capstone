@@ -14,14 +14,10 @@ public class GameFrame extends JFrame
         
         game = new GameComponent();
         add(game);
-        game.dragged(0,0);
         
-        //setContentPane(new JLabel(new ImageIcon("space.jpg")));
-        
-        MouseListener listener1 = new MousePressListener();
-        MouseMotionListener listener2 = new MousePressListener();
-        game.addMouseListener(listener1);
-        game.addMouseMotionListener(listener2);
+        MousePressListener listener = new MousePressListener();
+        game.addMouseListener(listener);
+        game.addMouseMotionListener(listener);
         
         setSize(FRAME_WIDTH,FRAME_HEIGHT);
     }
@@ -33,6 +29,7 @@ public class GameFrame extends JFrame
             int x = event.getX();
             int y = event.getY();
             game.dragged(x,y);
+            game.fire(x,y);
         }
         public void mouseDragged(MouseEvent event)
         {
