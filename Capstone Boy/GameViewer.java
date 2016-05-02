@@ -7,5 +7,6 @@ public class GameViewer
         JFrame frame = new GameFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        //timer and timertask
     }
 }

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.InterruptedException;
 public class GameComponent extends JComponent
 {
     private static final double FRAME_WIDTH = 790;
@@ -16,26 +17,29 @@ public class GameComponent extends JComponent
     private double prevY;
     private Bubble[] bubbles;
     private double bubbleRadius;
+    private int bubbleCount;
     public GameComponent()
     {
+        bubbleCount=0;
         setBackground(Color.WHITE);
         aimX = gunX;
         aimY = gunY-100;
         prevX = 0;
         prevY = 0;
-        //500 too big find exact number you asshole
         bubbles = new Bubble[500];
         bubbleRadius = 30;
         firstDragCancel=true;
-        int count = 0;
-        for (int i=0;i<FRAME_WIDTH;i+=(FRAME_WIDTH/20))
+        for (int i=0;i<FRAME_WIDTH-10;i+=(bubbleRadius))
         {
-            for (int j=0; j<FRAME_HEIGHT/2; j+=(FRAME_WIDTH/10))
+            for (int j=0; j<FRAME_HEIGHT/2; j+=(bubbleRadius))
             {
-                bubbles[count] = new Bubble(i,j,bubbleRadius);
-                count++;
+                bubbles[bubbleCount] = new Bubble(i,j,bubbleRadius);
+                bubbleCount++;
             }
         }
+        //first bubble on the gun
+        bubbles[bubbleCount]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius);
+        bubbleCount++;
     }
     
     public void paintComponent(Graphics g)
@@ -53,7 +57,8 @@ public class GameComponent extends JComponent
         //Draw the bubbles
         for (Bubble b : bubbles)
         {
-            b.draw(g2);
+            if (b != null)
+                b.draw(g2);
         }
     }
     public void dragged(double inX,double inY)
@@ -64,19 +69,44 @@ public class GameComponent extends JComponent
             firstDragCancel=false;
             return;
         }
-        double ratio = aimLength/(Math.sqrt((Math.pow(gunX-inX,2))+(Math.pow(gunY-inY,2))));
-        aimX = gunX-((gunX-inX)*ratio);
-        aimY = gunY-((gunY-inY)*ratio);
+        double ratio = findAimRatio(inX,inY,aimLength);
+        aimX = findAimX(inX,ratio);
+        aimY = findAimY(inY,ratio);
         repaint();
     }
-    public void fire(double inX,double inY)
+    public void fire(double inX,double inY) throws InterruptedException
     {
+        boolean collided = false;
+        double length = 1;
         if (prevX == aimX && prevY == aimY)
         {
-            //fire here
+            while (collided == false)
+            {
+                double ratio = findAimRatio(inX,inY,length);
+                length+=10;
+                Thread.sleep(200);
+                bubbles[bubbleCount-1].moveTo(findAimX(inX,ratio),findAimY(inY,ratio));
+                if (bubbles[bubbleCount-1].collided(bubbles,bubbleCount))
+                    collided=true;
+            }
+            bubbles[bubbleCount]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius);
+            bubbleCount++;
         }
         prevX = aimX;
         prevY = aimY;
+        repaint();
+    }
+    public double findAimRatio(double inX,double inY,double length)
+    {
+        return length/(Math.sqrt((Math.pow(gunX-inX,2))+(Math.pow(gunY-inY,2))));
+    }
+    public double findAimX(double inX,double ratio)
+    {
+        return gunX-((gunX-inX)*ratio);
+    }
+     public double findAimY(double inY,double ratio)
+    {
+        return gunY-((gunY-inY)*ratio);
     }
     public double getFrameWidth(){return FRAME_WIDTH;}
     public double getFrameHeight(){return FRAME_HEIGHT;}

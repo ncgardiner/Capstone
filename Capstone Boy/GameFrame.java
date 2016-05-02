@@ -1,7 +1,6 @@
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
-
 public class GameFrame extends JFrame
 {
     private static final int FRAME_WIDTH = 800;
@@ -24,7 +23,7 @@ public class GameFrame extends JFrame
     
     class MousePressListener implements MouseListener, MouseMotionListener
     {
-        public void mousePressed(MouseEvent event)
+        public void mousePressed(MouseEvent event) 
         {
             int x = event.getX();
             int y = event.getY();

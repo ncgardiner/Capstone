@@ -34,6 +34,51 @@ public class Bubble
         g2.setColor(color);
         g2.fill(new Ellipse2D.Double(x,y,radius,radius));
     }
+    public void moveTo(double inX,double inY)
+    {
+        x = inX;
+        y = inY;
+    }
+    public boolean collided(Bubble[] bubbles,int skip)
+    {
+        for (Bubble b: bubbles)
+        {
+            skip--;
+            if (skip>0)
+            {
+                //first test if the rectangles around the circles collide, to save processing power
+                if (Math.abs(x-b.getX())>=radius && Math.abs(y-b.getY())>=radius)
+                    //test if the circles collide
+                    if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius*2)
+                    {
+                        return true;
+                    }
+            }
+        }
+        return false;
+    }
     public double getX(){return x;}
     public double getY(){return y;}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
