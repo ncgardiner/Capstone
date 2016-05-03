@@ -1,6 +1,7 @@
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.InterruptedException;
 public class GameFrame extends JFrame
 {
     private static final int FRAME_WIDTH = 800;

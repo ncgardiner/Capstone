@@ -36,8 +36,8 @@ public class Bubble
     }
     public void moveTo(double inX,double inY)
     {
-        x = inX;
-        y = inY;
+        x = inX-radius/2;
+        y = inY-radius/2;
     }
     public boolean collided(Bubble[] bubbles,int skip)
     {
