@@ -1,7 +1,6 @@
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
-import java.lang.InterruptedException;
 public class GameFrame extends JFrame
 {
     private static final int FRAME_WIDTH = 800;
@@ -15,33 +14,31 @@ public class GameFrame extends JFrame
         game = new GameComponent();
         add(game);
         
-        MousePressListener listener = new MousePressListener();
-        game.addMouseListener(listener);
-        game.addMouseMotionListener(listener);
+        this.addKeyListener(new KeyStrokeListener());
         
         setSize(FRAME_WIDTH,FRAME_HEIGHT);
     }
-    
-    class MousePressListener implements MouseListener, MouseMotionListener
+    //Thanks to Nic Guerrero for the KeyListener code
+    class KeyStrokeListener implements KeyListener
     {
-        public void mousePressed(MouseEvent event) 
+        public void keyPressed(KeyEvent event) 
         {
-            int x = event.getX();
-            int y = event.getY();
-            game.dragged(x,y);
-            game.fire(x,y);
+            String key = KeyStroke.getKeyStrokeForEvent(event).toString().replace("pressed ", "");
+            if (key.equals("LEFT"))
+            {
+                game.moveAim(0);
+            }
+            else if (key.equals("RIGHT"))
+            {
+                game.moveAim(1);
+            }
+            else if (key.equals("UP")||key.equals("SPACE"))
+            {
+                game.fire();
+            }
         }
-        public void mouseDragged(MouseEvent event)
-        {
-            int x = event.getX();
-            int y = event.getY();
-            game.dragged(x,y);
-        }
-        public void mouseReleased(MouseEvent event){}
-        public void mouseClicked(MouseEvent event){}
-        public void mouseEntered(MouseEvent event){}
-        public void mouseExited(MouseEvent event){}
-        public void mouseMoved(MouseEvent event){}
+        public void keyTyped(KeyEvent event) {}
+        public void keyReleased(KeyEvent event) {}
     }
     
 }

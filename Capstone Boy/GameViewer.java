@@ -9,6 +9,6 @@ public class GameViewer
         frame.setVisible(true);
         Task task = new Task(frame);
         Timer timer = new Timer();
-        timer.schedule(task,100,50);
+        timer.schedule(task,100,25);
     }
 }

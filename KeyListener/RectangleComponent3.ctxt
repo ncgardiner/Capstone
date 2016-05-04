@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=RectangleComponent3()
+comment1.params=g
+comment1.target=void\ paintComponent(java.awt.Graphics)
+comment2.params=x\ y
+comment2.target=void\ moveRectangleTo(int,\ int)
+comment2.text=\r\n\ \ \ \ Moves\ the\ rectangle\ to\ the\ given\ location.\r\n\ \ \ \ @param\ x\ the\ x-position\ of\ the\ new\ location\r\n\ \ \ \ @param\ y\ the\ y-position\ of\ the\ new\ location\r\n
+comment3.params=dx\ dy
+comment3.target=void\ moveRectangleBy(int,\ int)
+comment3.text=\r\n\ \ \ \ Moves\ the\ rectangle\ by\ a\ given\ amount.\ \r\n\ \ \ \ @param\ dx\ the\ amount\ to\ move\ in\ the\ x-direction\ \r\n\ \ \ \ @param\ dy\ the\ amount\ to\ move\ in\ the\ y-direction\ \r\n
+numComments=4
