@@ -35,16 +35,16 @@ public class GameComponent extends JComponent
         collided=false;
         directionX=aimX;
         directionY=aimY;
-        for (int i=0;i<FRAME_WIDTH-10;i+=(bubbleRadius))
+        for (int i=0;i<(FRAME_WIDTH-10);i+=(bubbleRadius-2))
         {
-            for (int j=0; j<FRAME_HEIGHT/2; j+=(bubbleRadius))
+            for (int j=0; j<FRAME_HEIGHT/2; j+=(bubbleRadius-2))
             {
-                bubbles[bubbleCount] = new Bubble(i,j,bubbleRadius);
+                bubbles[bubbleCount] = new Bubble(i,j,bubbleRadius,FRAME_WIDTH,bubbleCount);
                 bubbleCount++;
             }
         }
         //first bubble on the gun
-        bubbles[bubbleCount]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius);
+        bubbles[bubbleCount]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,FRAME_WIDTH,bubbleCount);
         bubbleCount++;
     }
 
@@ -64,7 +64,11 @@ public class GameComponent extends JComponent
         for (Bubble b : bubbles)
         {
             if (b != null)
+            {
                 b.draw(g2);
+                if (b.isDead())
+                    b=null;
+            }
         }
         //fire
         boolean done = false;
@@ -74,7 +78,7 @@ public class GameComponent extends JComponent
             {
                 double ratio = findAimRatio(aimX-bubbleRadius/2,aimY-bubbleRadius/2,tempLength);
                 tempLength+=5;
-                bubbles[bubbleCount-1].moveTo(findAimX(aimX-bubbleRadius/2,ratio),findAimY(aimY-bubbleRadius/2,ratio));
+                bubbles[bubbleCount-1].moveTo(findAimX(aimX,ratio),findAimY(aimY-bubbleRadius/2,ratio));
                 if (bubbles[bubbleCount-1].collided(bubbles,bubbleCount))
                 {
                     collided=true;
@@ -83,7 +87,7 @@ public class GameComponent extends JComponent
             }
             if (done)
             {
-                bubbles[bubbleCount]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius);
+                bubbles[bubbleCount]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,FRAME_WIDTH,bubbleCount);
                 bubbleCount++;
                 tempLength=1;
                 done=false;
@@ -110,8 +114,11 @@ public class GameComponent extends JComponent
             directionX+=5;
         }
         double ratio = findAimRatio(directionX,directionY,aimLength);
-        aimX = findAimX(directionX,ratio);
-        aimY = findAimY(directionY,ratio);
+        if (!isFiring)
+        {
+            aimX = findAimX(directionX,ratio);
+            aimY = findAimY(directionY,ratio);
+        }
     }
 
     public void fire()

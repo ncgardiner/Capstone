@@ -7,12 +7,19 @@ public class Bubble
     private double y;
     private Color color;
     private double radius;
-    public Bubble(double inX,double inY,double radiusIn)
+    private double frameWidth;
+    private boolean alive;
+    private static final int chainMinimum = 3;
+    private int idNum;
+    public Bubble(double inX,double inY,double radiusIn,double frameW,int id)
     {
         color = this.randomColor();
         x = inX;
         y = inY;
         radius = radiusIn;
+        frameWidth=frameW;
+        alive = true;
+        idNum = id;
     }
 
     public Color randomColor()
@@ -49,15 +56,55 @@ public class Bubble
         {
             skip--;
             if (skip>0)
+            {
                 if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=Math.pow(radius,1))
+                {
+                    findConnected(bubbles,0);
                     return true;
+                }
+                else if (x<0||x>frameWidth-35||y<0)//if the bubble hits the border
+                    return true;
+            }
         }
         return false;
     }
 
+    public int findConnected(Bubble[] bubbles,int chainCount)
+    {
+        for (Bubble b: bubbles)
+        {
+            if (b!=null && b.getID()!=idNum)
+                if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=Math.pow(radius,1)
+                            && color==b.getColor())
+                {
+                    b.kill();
+                    //chainCount++;
+                    //chainCount=b.findConnected(bubbles,chainCount);
+                }
+        }
+        if (chainCount>=chainMinimum)
+            kill();
+        kill();
+        return chainCount;
+    }
+    
+    public boolean isDead()
+    {
+        if (alive)
+            return false;
+        else
+            return true;
+    }
+    
     public double getX(){return x;}
 
     public double getY(){return y;}
+    
+    public Color getColor(){return color;}
+    
+    public int getID(){return idNum;}
+    
+    public void kill(){alive=false;}
 }
 
 
