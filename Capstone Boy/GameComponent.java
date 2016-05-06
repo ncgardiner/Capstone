@@ -67,23 +67,30 @@ public class GameComponent extends JComponent
             {
                 b.draw(g2);
                 if (b.isDead())
-                    b=null;
+                {
+                    bubbles[b.getID()]=null;
+                }
             }
         }
         //fire
         boolean done = false;
         if (isFiring)
         {
-            if (!collided)
+            if (!collided && bubbles[bubbleCount-1]!=null)
             {
                 double ratio = findAimRatio(aimX-bubbleRadius/2,aimY-bubbleRadius/2,tempLength);
                 tempLength+=5;
                 bubbles[bubbleCount-1].moveTo(findAimX(aimX,ratio),findAimY(aimY-bubbleRadius/2,ratio));
                 if (bubbles[bubbleCount-1].collided(bubbles,bubbleCount))
                 {
-                    collided=true;
                     done = true;
+                    collided=true;
                 }
+            }
+            else
+            {
+                done=true;
+                collided=true;
             }
             if (done)
             {

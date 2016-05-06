@@ -55,9 +55,9 @@ public class Bubble
         for (Bubble b: bubbles)
         {
             skip--;
-            if (skip>0)
+            if (skip>0 && b!=null)
             {
-                if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=Math.pow(radius,1))
+                if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
                 {
                     findConnected(bubbles,0);
                     return true;
@@ -73,27 +73,23 @@ public class Bubble
     {
         for (Bubble b: bubbles)
         {
-            if (b!=null && b.getID()!=idNum)
-                if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=Math.pow(radius,1)
-                            && color==b.getColor())
-                {
-                    b.kill();
-                    //chainCount++;
-                    //chainCount=b.findConnected(bubbles,chainCount);
-                }
+            if (b!=null)
+                if (b.getID()!=idNum && color==b.getColor())
+                    if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
+                    {
+                        b.kill();
+                        chainCount++;
+                        chainCount=b.findConnected(bubbles,chainCount);
+                    }
         }
         if (chainCount>=chainMinimum)
             kill();
-        kill();
         return chainCount;
     }
     
     public boolean isDead()
     {
-        if (alive)
-            return false;
-        else
-            return true;
+        return !alive;
     }
     
     public double getX(){return x;}
