@@ -6,12 +6,12 @@ public class Bubble
     private double x;
     private double y;
     private Color color;
-    private int radius;
+    private double radius;
     private double frameWidth;
     private boolean alive;
     private static final int chainMinimum = 3;
     private int idNum;
-    public Bubble(double inX,double inY,int radiusIn,double frameW,int id)
+    public Bubble(double inX,double inY,double radiusIn,double frameW,int id)
     {
         color = this.randomColor();
         x = inX;
