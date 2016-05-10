@@ -9,7 +9,7 @@ public class Bubble
     private int radius;
     private double frameWidth;
     private boolean alive;
-    private static final int chainMinimum = 3;
+    private static final int chainMinimum = 0;
     private int idNum;
     public Bubble(double inX,double inY,int radiusIn,double frameW,int id)
     {
@@ -50,8 +50,23 @@ public class Bubble
         y = inY-radius/2;
     }
 
-    public boolean collided(Bubble[] bubbles,int skip)
+    public boolean collided(Bubble[][] oldBubs, Bubble[] bubbles,int skip)
     {
+        for (int i = 0; i < oldBubs.length; i++)
+            for (int j = 0; j < oldBubs[0].length;j++)
+            {
+                if (!oldBubs[i][j].isDead())
+                {
+                    Bubble b = oldBubs[i][j];
+                    if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
+                    {
+                        findConnected(oldBubs,bubbles,0);
+                        return true;
+                    }
+                    else if (x<0||x>frameWidth-35||y<0)//if the bubble hits the border
+                        return true;
+                }
+            }
         for (Bubble b: bubbles)
         {
             skip--;
@@ -59,7 +74,7 @@ public class Bubble
             {
                 if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
                 {
-                    findConnected(bubbles,0);
+                    findConnected(oldBubs,bubbles,0);
                     return true;
                 }
                 else if (x<0||x>frameWidth-35||y<0)//if the bubble hits the border
@@ -69,7 +84,7 @@ public class Bubble
         return false;
     }
 
-    public int findConnected(Bubble[] bubbles,int chainCount)
+    public int findConnected(Bubble[][] oldBubs, Bubble[] bubbles,int chainCount)
     {
         for (Bubble b: bubbles)
         {
@@ -77,9 +92,8 @@ public class Bubble
                 if (b.getID()!=idNum && color==b.getColor())
                     if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
                     {
-                        b.kill();
                         chainCount++;
-                        chainCount=b.findConnected(bubbles,chainCount);
+                        //chainCount=b.findConnected(oldBubs,bubbles,chainCount);
                     }
         }
         if (chainCount>=chainMinimum)

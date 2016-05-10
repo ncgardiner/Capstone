@@ -10,7 +10,6 @@ public class GameComponent extends JComponent
     private static final double gunX = FRAME_WIDTH/2;
     private static final double gunY = FRAME_HEIGHT+60;
     private static final double aimLength=100;
-    private boolean firstDragCancel;
     private double aimX;
     private double aimY;
     private Bubble[][] bubbles;
@@ -23,6 +22,8 @@ public class GameComponent extends JComponent
     private boolean collided;
     private double directionX;
     private double directionY;
+    private int rows;
+    private int cols;
     public GameComponent()
     {
         bubbleCount=0;
@@ -31,27 +32,25 @@ public class GameComponent extends JComponent
         aimY = gunY-100;
         tempLength=1;
         bubbleRadius = 30;
-        firstDragCancel=true;
         isFiring=false;
         collided=false;
         directionX=aimX;
         directionY=aimY;
         bubs=0;
-        int rows=(int)(FRAME_WIDTH-10)/((bubbleRadius-2));
-        int cols=(int)(FRAME_HEIGHT/2)/(bubbleRadius-2);
+        rows=(int)(FRAME_WIDTH)/((bubbleRadius-2));
+        cols=(int)(FRAME_HEIGHT/2)/(bubbleRadius-2);
         bubbles = new Bubble[rows][cols];
         newBubbles = new Bubble[100];
-        for (int i=0;i<rows;i+=bubbleRadius-2)
+        for (int i=0;i<rows;i++)
         {
-            for (int j=0; j<cols; j+=bubbleRadius-2)
+            for (int j=0; j<cols; j++)
             {
-                bubbles[i][j] = new Bubble(i,j,bubbleRadius,FRAME_WIDTH,bubbleCount);
+                bubbles[i][j] = new Bubble(i*(bubbleRadius-2),j*(bubbleRadius-2),bubbleRadius,FRAME_WIDTH,bubbleCount);
                 bubbleCount++;
             }
         }
         //first bubble on the gun
-        newBubbles[bubs]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,FRAME_WIDTH,bubbleCount);
-        bubbleCount++;
+        newBubbles[bubs]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,FRAME_WIDTH,bubs);
         bubs++;
     }
 
@@ -68,16 +67,12 @@ public class GameComponent extends JComponent
         g2.draw(new Line2D.Double(gunX,gunY,aimX,aimY));
         g2.setStroke(new BasicStroke(1));
         //Draw the bubbles
-        for (int i =0; i<bubbles.length;i++)
-            for (int j = 0; j<bubbles[0].length;j++)
+        for (int i = 0; i< rows;i++)
+            for (int j = 0; j < cols;j++)
             {
-                if (bubbles[i][j]!=null)
+                if (!bubbles[i][j].isDead())
                 {
                     bubbles[i][j].draw(g2);
-                    if (bubbles[i][j].isDead())
-                    {
-                        bubbles[i][j]=null;
-                    }
                 }
             }
         for (Bubble b : newBubbles)
@@ -92,46 +87,12 @@ public class GameComponent extends JComponent
             }
         }
         //fire
-        boolean done = false;
         if (isFiring)
-        {
-            if (!collided && bubbles[bubbleCount-1]!=null)
-            {
-                double ratio = findAimRatio(aimX-bubbleRadius/2,aimY-bubbleRadius/2,tempLength);
-                tempLength+=5;
-                newBubbles[bubs-1].moveTo(findAimX(aimX,ratio),findAimY(aimY-bubbleRadius/2,ratio));
-                if (newBubbles[bubs-1].collided(newBubbles,bubs))
-                {
-                    done = true;
-                    collided=true;
-                }
-            }
-            else
-            {
-                done=true;
-                collided=true;
-            }
-            if (done)
-            {
-                newBubbles[bubs]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,FRAME_WIDTH,bubbleCount);
-                bubbleCount++;
-                bubs++;
-                tempLength=1;
-                done=false;
-                collided=false;
-                isFiring=false;
-            }
-        }
+            shoot();
     }
 
     public void moveAim(int direction)
     {
-        if (firstDragCancel==true)
-        {
-            repaint();
-            firstDragCancel=false;
-            return;
-        }
         if (direction==0)//0 is left
         {
             directionX-=5;
@@ -153,6 +114,36 @@ public class GameComponent extends JComponent
         isFiring=true;
     }
 
+    public void shoot()
+    {
+        boolean done = false;
+        if (!collided && newBubbles[bubs-1].isDead()==false)
+        {
+            double ratio = findAimRatio(aimX-bubbleRadius/2,aimY-bubbleRadius/2,tempLength);
+            tempLength+=5;
+            newBubbles[bubs-1].moveTo(findAimX(aimX,ratio),findAimY(aimY-bubbleRadius/2,ratio));
+            if (newBubbles[bubs-1].collided(bubbles,newBubbles,bubs))
+            {
+                done = true;
+                collided=true;
+            }
+        }
+        else
+        {
+            done=true;
+            collided=true;
+        }
+        if (done)
+        {
+            newBubbles[bubs]= new Bubble(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,FRAME_WIDTH,bubs);
+            bubs++;
+            tempLength=1;
+            done=false;
+            collided=false;
+            isFiring=false;
+        }
+    }
+    
     public double findAimRatio(double inX,double inY,double length)
     {
         return length/(Math.sqrt((Math.pow(gunX-inX,2))+(Math.pow(gunY-inY,2))));
