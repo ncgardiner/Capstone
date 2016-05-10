@@ -10,7 +10,7 @@ public class GameComponent extends JComponent
     private static final double gunX = FRAME_WIDTH/2;
     private static final double gunY = FRAME_HEIGHT+60;
     private static final double aimLength=100;
-    private static final double bubbleRadius = 30;
+    private static final double bubbleRadius = 50;
     private double aimX;
     private double aimY;
     private Bubble[] bubbles;

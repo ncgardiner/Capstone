@@ -78,7 +78,7 @@ public class Bubble
         {
             if (b!=null)
                 if (b.getID()!=idNum && color==b.getColor())
-                    if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
+                    if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius+5)
                     {
                         b.connected();
                         found = true;
@@ -94,15 +94,10 @@ public class Bubble
     }
     
     public void connected(){connected = true;}
-    
     public double getX(){return x;}
-
     public double getY(){return y;}
-    
     public Color getColor(){return color;}
-    
     public int getID(){return idNum;}
-    
     public void kill(){alive=false;}
 }
 
