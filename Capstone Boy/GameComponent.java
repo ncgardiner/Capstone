@@ -10,11 +10,10 @@ public class GameComponent extends JComponent
     private static final double gunX = FRAME_WIDTH/2;
     private static final double gunY = FRAME_HEIGHT+60;
     private static final double aimLength=100;
-    private boolean firstDragCancel;
+    private static final double bubbleRadius = 30;
     private double aimX;
     private double aimY;
     private Bubble[] bubbles;
-    private double bubbleRadius;
     private int bubbleCount;
     private boolean isFiring;
     private double tempLength;
@@ -29,8 +28,6 @@ public class GameComponent extends JComponent
         aimY = gunY-100;
         tempLength=1;
         bubbles = new Bubble[500];
-        bubbleRadius = 30;
-        firstDragCancel=true;
         isFiring=false;
         collided=false;
         directionX=aimX;
@@ -57,21 +54,20 @@ public class GameComponent extends JComponent
         g2.fill(new Ellipse2D.Double(gunX-50,gunY-50,100,100));
         g2.setColor(Color.BLACK);
         g2.draw(new Ellipse2D.Double(gunX-50,gunY-50,100,100));
+        g2.draw(new Ellipse2D.Double(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,bubbleRadius));
         g2.setStroke(new BasicStroke(5));
         g2.draw(new Line2D.Double(gunX,gunY,aimX,aimY));
         g2.setStroke(new BasicStroke(1));
+        g2.setColor(Color.WHITE);
+        g2.fill(new Ellipse2D.Double(gunX-bubbleRadius/2,gunY-bubbleRadius/2,bubbleRadius,bubbleRadius));
         //Draw the bubbles
         for (Bubble b : bubbles)
-        {
             if (b != null)
             {
-                b.draw(g2);
+                b.draw(g2,bubbles);
                 if (b.isDead())
-                {
                     bubbles[b.getID()]=null;
-                }
             }
-        }
         //fire
         boolean done = false;
         if (isFiring)
@@ -106,20 +102,10 @@ public class GameComponent extends JComponent
 
     public void moveAim(int direction)
     {
-        if (firstDragCancel==true)
-        {
-            repaint();
-            firstDragCancel=false;
-            return;
-        }
         if (direction==0)//0 is left
-        {
             directionX-=5;
-        }
         else if (direction==1)//1 is right
-        {
             directionX+=5;
-        }
         double ratio = findAimRatio(directionX,directionY,aimLength);
         if (!isFiring)
         {

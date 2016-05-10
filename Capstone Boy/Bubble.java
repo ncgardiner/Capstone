@@ -9,8 +9,8 @@ public class Bubble
     private double radius;
     private double frameWidth;
     private boolean alive;
-    private static final int chainMinimum = 3;
     private int idNum;
+    private boolean connected;
     public Bubble(double inX,double inY,double radiusIn,double frameW,int id)
     {
         color = this.randomColor();
@@ -20,6 +20,7 @@ public class Bubble
         frameWidth=frameW;
         alive = true;
         idNum = id;
+        connected = false;
     }
 
     public Color randomColor()
@@ -38,10 +39,12 @@ public class Bubble
             return Color.MAGENTA;
     }
 
-    public void draw(Graphics2D g2)
+    public void draw(Graphics2D g2,Bubble[] bubs)
     {
         g2.setColor(color);
         g2.fill(new Ellipse2D.Double(x,y,radius,radius));
+        if (connected)
+            findConnected(bubs,true);
     }
 
     public void moveTo(double inX,double inY)
@@ -59,7 +62,7 @@ public class Bubble
             {
                 if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
                 {
-                    findConnected(bubbles,0);
+                    findConnected(bubbles,false);
                     return true;
                 }
                 else if (x<0||x>frameWidth-35||y<0)//if the bubble hits the border
@@ -69,7 +72,7 @@ public class Bubble
         return false;
     }
 
-    public int findConnected(Bubble[] bubbles,int chainCount)
+    public void findConnected(Bubble[] bubbles,boolean found)
     {
         for (Bubble b: bubbles)
         {
@@ -77,20 +80,20 @@ public class Bubble
                 if (b.getID()!=idNum && color==b.getColor())
                     if (Math.sqrt(Math.pow(b.getX()-x,2)+Math.pow(b.getY()-y,2))<=radius)
                     {
-                        b.kill();
-                        chainCount++;
-                        chainCount=b.findConnected(bubbles,chainCount);
+                        b.connected();
+                        found = true;
                     }
         }
-        if (chainCount>=chainMinimum)
+        if (found)
             kill();
-        return chainCount;
     }
     
     public boolean isDead()
     {
         return !alive;
     }
+    
+    public void connected(){connected = true;}
     
     public double getX(){return x;}
 
