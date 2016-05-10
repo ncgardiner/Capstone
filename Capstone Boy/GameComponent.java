@@ -1,8 +1,14 @@
 import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.*;
-import java.io.IOException;
-import java.lang.InterruptedException;
+import java.io.*;
+/**
+ * this is the component that controls the game.  Takes in keyboard commands in order to
+ * change different elements of the game and control it
+ * 
+ * @author ngardiner
+ * @version 5.10.16
+ */
 public class GameComponent extends JComponent
 {
     private static final double FRAME_WIDTH = 790;
@@ -32,7 +38,7 @@ public class GameComponent extends JComponent
         collided=false;
         directionX=aimX;
         directionY=aimY;
-        for (int i=0;i<(FRAME_WIDTH-10);i+=(bubbleRadius-2))
+        for (int i=0;i<(FRAME_WIDTH-30);i+=(bubbleRadius-2))
         {
             for (int j=0; j<FRAME_HEIGHT/2; j+=(bubbleRadius-2))
             {
@@ -45,7 +51,7 @@ public class GameComponent extends JComponent
         bubbleCount++;
     }
 
-    public void paintComponent(Graphics g)
+    public void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
         Graphics2D g2= (Graphics2D) g;
@@ -99,7 +105,7 @@ public class GameComponent extends JComponent
             }
         }
     }
-
+    
     public void moveAim(int direction)
     {
         if (direction==0)//0 is left

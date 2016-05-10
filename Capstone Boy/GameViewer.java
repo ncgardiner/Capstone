@@ -1,5 +1,11 @@
 import javax.swing.JFrame;
 import java.util.*;
+/**
+ * the basic viewer class, opens a new gameframe and uses a timer to periodically update the frame
+ * 
+ * @author ngardiner 
+ * @version 5.10.16
+ */
 public class GameViewer
 {
     public static void main(String[] args) throws InterruptedException

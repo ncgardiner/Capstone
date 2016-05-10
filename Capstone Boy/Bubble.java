@@ -1,6 +1,13 @@
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.Random;
+/**
+ * The bubbles that are present in a game.  This class represents one individual bubble,
+ * and controls its properties
+ * 
+ * @author ngardiner
+ * @version 5.10.16
+ */
 public class Bubble
 {
     private double x;
