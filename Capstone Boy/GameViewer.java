@@ -8,6 +8,9 @@ import java.util.*;
  */
 public class GameViewer
 {
+    /**
+     * Creates the frame, and periodically calls the task until the program is exited
+     */
     public static void main(String[] args) throws InterruptedException
     {
         GameFrame frame = new GameFrame();

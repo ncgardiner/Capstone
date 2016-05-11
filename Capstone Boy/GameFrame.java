@@ -11,10 +11,16 @@ import java.awt.*;
  */
 public class GameFrame extends JFrame
 {
+    /** the unchanging width of the frame */
     private static final int FRAME_WIDTH = 800;
+    /** the unchanging height of the frame */
     private static final int FRAME_HEIGHT = 800;
-
+    /** the game object that is added to the frame */
     private GameComponent game;
+    /**
+     * Default constructor for objects of class GameFrame
+     * creates the frame and adds the keylistener
+     */
     public GameFrame()
     {
         setTitle("Bubble Popper 3000 Extreme");
@@ -38,6 +44,13 @@ public class GameFrame extends JFrame
      */
     class KeyStrokeListener implements KeyListener
     {
+        /**
+         * extension of KeyListener that calls the moveAim and fire methods of the 
+         * gameComponent when the appropriate keys are pressed
+         *
+         * @post    the correct method will be called based on the key pressed
+         * @param    the event that determines what method to call
+         */
         public void keyPressed(KeyEvent event) 
         {
             String key = KeyStroke.getKeyStrokeForEvent(event).toString().replace("pressed ", "");

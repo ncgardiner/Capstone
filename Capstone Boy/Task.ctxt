@@ -1,6 +1,8 @@
 #BlueJ class context
 comment0.params=frameIn
 comment0.target=Task(GameFrame)
+comment0.text=\n\ Default\ constructor\ for\ objects\ of\ class\ Task\n
 comment1.params=
 comment1.target=void\ run()
+comment1.text=\n\ repaints\ the\ frame\n\n\ @post\ \ \ \ the\ frame\ will\ be\ repainted\n
 numComments=2

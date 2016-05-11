@@ -1,4 +1,5 @@
 #BlueJ class context
 comment0.params=
 comment0.target=GameFrame()
+comment0.text=\n\ Default\ constructor\ for\ objects\ of\ class\ GameFrame\n\ creates\ the\ frame\ and\ adds\ the\ keylistener\n
 numComments=1
